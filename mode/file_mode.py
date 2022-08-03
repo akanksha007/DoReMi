@@ -14,7 +14,8 @@ class FileMode(Mode):
         try:
             with open(self.file_name) as file:
                 for line in file.readlines():
-                    command = Command(line)
+                    processed_line = line.strip()
+                    command = Command(processed_line)
                     self.__process_command(command)
 
         except IOError:

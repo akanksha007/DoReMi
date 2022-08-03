@@ -32,6 +32,12 @@ class SubscriptionPlanService:
     def get_all_video_subscriptions(self):
         return self.category_to_subscription_plan[Category.VIDEO]
 
+    def get_subscription_by_category_and_plan_type(self, category, plan_name):
+        subscription_plans = self.category_to_subscription_plan[category]
+        for plan in subscription_plans:
+            if plan.name == plan_name:
+                return plan
+
     def __preload_data(self):
         # music initialization
         music_free_subscription_plan = SubscriptionPlan(PlanName.FREE, DurationUnit.MONTH,
