@@ -5,8 +5,8 @@ class OutputPrinter:
     def invalid_date(self):
         self.__print_with_new_line("INVALID_DATE")
 
-    def add_subscription_failed(self):
-        self.__print_with_new_line("ADD_SUBSCRIPTION_FAILED")
+    def add_subscription_failed(self, reason):
+        self.__print_with_new_line("ADD_SUBSCRIPTION_FAILED", + " " + reason)
 
     def duplicate_category(self):
         self.__print_with_new_line("DUPLICATE_CATEGORY")
@@ -19,6 +19,9 @@ class OutputPrinter:
 
     def print_renewal_amount(self, renewal_amount):
         self.__print_with_new_line("RENEWAL_AMOUNT" + " " + str(renewal_amount))
+
+    def add_topup_failed(self, reason):
+        self.__print_with_new_line("ADD_TOPUP_FAILED" + " " + reason)
 
     def __print_with_new_line(self, message):
         print(message)

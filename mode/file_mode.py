@@ -4,10 +4,12 @@ from mode.mode import Mode
 
 
 class FileMode(Mode):
-    def __init__(self, output_printer, command_executor_factory, active_subscription_plan_service, file_name):
+    def __init__(self, output_printer, command_executor_factory, active_subscription_plan_service,
+                 topup_service, file_name):
         self.output_printer = output_printer
         self.command_executor_factory = command_executor_factory
         self.active_subscription_plan_service = active_subscription_plan_service
+        self.topup_service = topup_service
         self.file_name = file_name
 
     def process(self):

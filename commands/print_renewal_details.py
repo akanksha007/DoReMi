@@ -17,6 +17,8 @@ class PrintRenewalDetails(CommandExecutor):
 
     def execute(self, command):
         active_subscriptions = self._active_subscription_plan_service.get_subscription()
+        topup_plan = self._active_subscription_plan_service.get_topup()
+        topup_months = self._active_subscription_plan_service.get_topup_months()
         subscription_start_date = self._active_subscription_plan_service.get_date()
         renewal_amount = 0
 
@@ -26,12 +28,17 @@ class PrintRenewalDetails(CommandExecutor):
             date = utils.util.get_renewal_date(subscription_start_date, duration_unit, duration_count)
             renewal_amount += plan_amount
             self._output_printer.print_renewal_details(category + " " + str(date))
-        self._output_printer.print_renewal_amount(renewal_amount)
+        renewal_amount += self.__get_topup_renewal_amount(topup_plan, topup_months)
+        self._output_printer.print_renewal_amount(int(renewal_amount))
 
     def __fetch_duration_for_active_subscription(self, category, plan_name):
         category, plan_name = Category[category], PlanName[plan_name]
-        subscription_plan = self._subscription_plan_service.get_subscription_by_category_and_plan_type(category, plan_name)
+        subscription_plan = self._subscription_plan_service.get_subscription_by_category_and_plan_type(category,
+                                                                                                       plan_name)
         return subscription_plan
+
+    def __get_topup_renewal_amount(self, topup_plan, topup_months):
+        return topup_plan.amount * utils.util.get_topup_months(topup_plan, topup_months)
 
     def __init__(self, subscription_plan_service, output_printer, active_subscription_plan_service):
         self._subscription_plan_service = subscription_plan_service

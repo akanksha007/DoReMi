@@ -4,18 +4,18 @@ from commands.command_executor import CommandExecutor
 
 class AddSubscription(CommandExecutor):
     COMMAND_NAME = "ADD_SUBSCRIPTION"
+    INVALID_DATE = "INVALID_DATE"
+    DUPLICATE_CATEGORY = "DUPLICATE_CATEGORY"
 
     def validate(self, command):
         date = self._active_subscription_plan_service.get_date()
         categories = self._active_subscription_plan_service.get_subscription()
         category, plan_type = command.params
         if utils.util.subscription_date_not_set(date):
-            self._output_printer.add_subscription_failed()
-            self._output_printer.invalid_date()
+            self._output_printer.add_subscription_failed(AddSubscription.INVALID_DATE)
             return False
         elif utils.util.category_already_subscribed(categories, category):
-            self._output_printer.add_subscription_failed()
-            self._output_printer.duplicate_category()
+            self._output_printer.add_subscription_failed(AddSubscription.DUPLICATE_CATEGORY)
             return False
         else:
             return True
